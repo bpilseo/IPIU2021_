@@ -87,6 +87,8 @@ class MobileFacenet(nn.Module):
         self.linear7 = ConvBlock(288, 288, (7, 6), 1, 0, dw=True, linear=True)
 
         self.linear1 = ConvBlock(288, 128, 1, 1, 0, linear=True)
+
+        
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
