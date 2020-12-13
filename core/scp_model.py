@@ -7,6 +7,7 @@ from torch.autograd import Variable
 
 import math
 from torch.nn import Parameter
+from utils import print_model_info
 
 class Bottleneck(nn.Module):
     def __init__(self, inp, oup, stride, expansion):
@@ -79,6 +80,11 @@ class MobileFacenet(nn.Module):
 
         self.conv2 = ConvBlock(64, 256, 1, 1, 0)
         self.conv3 = ConvBlock(3, 32, 1, 2, 0)
+        # self.conv4 = ConvBlock(288, 256, 1, 2, 0)
+        # self.conv5 = ConvBlock(256,512, 1, 2, 0)
+        # self.conv6 = ConvBlock(512, 512, 1, 2, 0)
+        self.avg_pool = nn.AvgPool2d((7,6))
+        
         self.linear7 = ConvBlock(288, 288, (7, 6), 1, 0, dw=True, linear=True)
 
         self.linear1 = ConvBlock(288, 128, 1, 1, 0, linear=True)
