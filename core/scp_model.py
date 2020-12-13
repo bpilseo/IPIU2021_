@@ -7,10 +7,6 @@ from torch.autograd import Variable
 
 import math
 from torch.nn import Parameter
-<<<<<<< HEAD
-=======
-from utils import print_model_info
->>>>>>> 74b57da84e29c1aea815d06c8c42cccceec048c3
 
 class Bottleneck(nn.Module):
     def __init__(self, inp, oup, stride, expansion):
@@ -83,22 +79,10 @@ class MobileFacenet(nn.Module):
 
         self.conv2 = ConvBlock(64, 256, 1, 1, 0)
         self.conv3 = ConvBlock(3, 32, 1, 2, 0)
-<<<<<<< HEAD
-
-=======
-        # self.conv4 = ConvBlock(288, 256, 1, 2, 0)
-        # self.conv5 = ConvBlock(256,512, 1, 2, 0)
-        # self.conv6 = ConvBlock(512, 512, 1, 2, 0)
-        self.avg_pool = nn.AvgPool2d((7,6))
->>>>>>> 74b57da84e29c1aea815d06c8c42cccceec048c3
         self.linear7 = ConvBlock(288, 288, (7, 6), 1, 0, dw=True, linear=True)
 
         self.linear1 = ConvBlock(288, 128, 1, 1, 0, linear=True)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 74b57da84e29c1aea815d06c8c42cccceec048c3
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
@@ -126,12 +110,6 @@ class MobileFacenet(nn.Module):
         x = self.blocks(x)
         x = self.conv2(x)
         x_2  = self.conv3(x_2)
-<<<<<<< HEAD
-        x = torch.cat((x,x_2), dim=1)
-        x = F.max_pool2d(x, 2)
-        x = F.max_pool2d(x, 2)
-        x = F.max_pool2d(x, 2)
-=======
         x = torch.cat((x,x_2), dim=1) # 288
         
         # x = self.avg_pool(x)
@@ -144,7 +122,6 @@ class MobileFacenet(nn.Module):
         # x = F.max_pool2d(x, 2)
         # x = F.max_pool2d(x, 2)
         
->>>>>>> 74b57da84e29c1aea815d06c8c42cccceec048c3
         x = self.linear7(x)
         x = self.linear1(x)
         x = x.view(x.size(0), -1)
@@ -189,11 +166,6 @@ class ArcMarginProduct(nn.Module):
 if __name__ == "__main__":
     input = Variable(torch.FloatTensor(2, 3, 112, 96))
     net = MobileFacenet()
-<<<<<<< HEAD
     print(net)
-=======
-    print_model_info(net,(3,112,96))
-    # print(net)
->>>>>>> 74b57da84e29c1aea815d06c8c42cccceec048c3
     x = net(input)
     print(x.shape)
