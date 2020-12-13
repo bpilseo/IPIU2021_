@@ -172,6 +172,7 @@ class ArcMarginProduct(nn.Module):
 if __name__ == "__main__":
     input = Variable(torch.FloatTensor(2, 3, 112, 96))
     net = MobileFacenet()
-    print(net)
+    print_model_info(net,(3,112,96))
+    # print(net)
     x = net(input)
     print(x.shape)
