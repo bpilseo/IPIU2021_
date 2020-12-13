@@ -84,10 +84,15 @@ class MobileFacenet(nn.Module):
         # self.conv5 = ConvBlock(256,512, 1, 2, 0)
         # self.conv6 = ConvBlock(512, 512, 1, 2, 0)
         self.avg_pool = nn.AvgPool2d((7,6))
-        
+
+
+
         self.linear7 = ConvBlock(288, 288, (7, 6), 1, 0, dw=True, linear=True)
 
         self.linear1 = ConvBlock(288, 128, 1, 1, 0, linear=True)
+
+
+
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
