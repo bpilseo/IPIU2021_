@@ -7,11 +7,12 @@ import copy
 import core.model
 import os
 import torch.utils.data
-from core import model
+from core import model, model_csp2
 from dataloader.LFW_loader import LFW
 from config import LFW_DATA_DIR
 import argparse
 import tqdm
+
 
 def parseList(root):
     with open(os.path.join(root, 'lfw_test_pair.txt')) as f:
@@ -44,29 +45,25 @@ def parseList(root):
 
 
 def getAccuracy(scores, flags, threshold):
-    pos = [scores[flags == 1] > threshold] # 5966..
-    neg = [scores[flags == -1] < threshold] #
     p = np.sum(scores[flags == 1] > threshold)
     n = np.sum(scores[flags == -1] < threshold)
-    return pos, neg, (1.0 * (p + n)) / (len(scores))
+    return 1.0 * (p + n) / len(scores)
 
 
 def getThreshold(scores, flags, thrNum):
     accuracys = np.zeros((2 * thrNum + 1, 1))
     thresholds = np.arange(-thrNum, thrNum + 1) * 1.0 / thrNum
     for i in range(2 * thrNum + 1):
-        _, _, accuracys[i] = getAccuracy(scores, flags, thresholds[i])
+        accuracys[i] = getAccuracy(scores, flags, thresholds[i])
 
     max_index = np.squeeze(accuracys == np.max(accuracys))
     bestThreshold = np.mean(thresholds[max_index])
     return bestThreshold
 
 
-def evaluation_10_fold(root='C:\\Users\\pc\\Desktop\\PythonWorkSpace\\face_rec2\\MobileFaceNet_Pytorch\\result\\pytorch_result.mat'):
+def evaluation_10_fold(root):
     ACCs = np.zeros(10)
     result = scipy.io.loadmat(root)
-    pos_ = []
-    neg_ = []
     for i in range(10):
         fold = result['fold']
         flags = result['flag']
@@ -86,9 +83,7 @@ def evaluation_10_fold(root='C:\\Users\\pc\\Desktop\\PythonWorkSpace\\face_rec2\
 
         scores = np.sum(np.multiply(featureLs, featureRs), 1)
         threshold = getThreshold(scores[valFold[0]], flags[valFold[0]], 10000)
-        pos, neg, ACCs[i] = getAccuracy(scores[testFold[0]], flags[testFold[0]], threshold)
-        pos_.append(pos)
-        neg_.append(neg)
+        ACCs[i] = getAccuracy(scores[testFold[0]], flags[testFold[0]], threshold)
 
     return ACCs
 
@@ -96,7 +91,7 @@ def evaluation_10_fold(root='C:\\Users\\pc\\Desktop\\PythonWorkSpace\\face_rec2\
 
 
 def getFeatureFromTorch(lfw_dir, feature_save_dir, resume=None, gpu=True):
-    net = model.MobileFacenet()
+    net = model_csp2.MobileFacenet()
     if gpu:
         net = net.cuda()
     if resume:
@@ -140,9 +135,11 @@ def getFeatureFromTorch(lfw_dir, feature_save_dir, resume=None, gpu=True):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Testing')
     parser.add_argument('--lfw_dir', type=str, default=LFW_DATA_DIR, help='The path of lfw data')
-    parser.add_argument('--resume', type=str, default='C:\\Users\\pc\\Desktop\\PythonWorkSpace\\face_rec2\\MobileFaceNet_Pytorch\\model\\best\\068.ckpt',
+
+    # ckpt 파일 로드
+    parser.add_argument('--resume', type=str, default=r'C:\Users\pc\Desktop\PythonWorkSpace\face_rec2\MobileFaceNet_Pytorch\model\CASIA_B512_v2_20201214_223423\032.ckpt',
                         help='The path pf save model')
-    parser.add_argument('--feature_save_dir', type=str, default='C:\\Users\\pc\\Desktop\\PythonWorkSpace\\face_rec2\\MobileFaceNet_Pytorch\\result\\best_result.mat',
+    parser.add_argument('--feature_save_dir', type=str, default='C:\\Users\\pc\\Desktop\\PythonWorkSpace\\face_rec2\\MobileFaceNet_Pytorch\\result\\tmp_result.mat',
                         help='The path of the extract features save, must be .mat file')
     args = parser.parse_args()
 
