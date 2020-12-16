@@ -77,7 +77,7 @@ if __name__ == '__main__':
     parser.add_argument('--dataset_path', type=str, default='', help='The path of target dataset ')
     parser.add_argument('--model_name', type=str, default='mobileface_csp', help='The name of target model ')
     parser.add_argument('--checkpoint_path', type=str, default='', help='The checkpoint path of the model ')
-    parser.add_argument('--feature_save_dir', type=str, default='C:\\Users\\pc\\Desktop\\PythonWorkSpace\\face_rec2\\MobileFaceNet_Pytorch\\result\\tmp_result.mat',
+    parser.add_argument('--feature_save_dir', type=str, default='',
                         help='The path of the extract features save, must be .mat file')
     
     args = parser.parse_args()
