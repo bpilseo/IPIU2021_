@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.misc
-
+import imageio
 # pip install scipy==1.1.0
 
 import torch
@@ -11,10 +11,10 @@ class LFW(object):
         self.imgr_list = imgr
 
     def __getitem__(self, index):
-        imgl = scipy.misc.imread(self.imgl_list[index]) # 128 128
+        imgl = imageio.imread(self.imgl_list[index]) # 128 128
         if len(imgl.shape) == 2:
             imgl = np.stack([imgl] * 3, 2)
-        imgr = scipy.misc.imread(self.imgr_list[index]) # 128 128
+        imgr = imageio.imread(self.imgr_list[index]) # 128 128
         if len(imgr.shape) == 2:
             imgr = np.stack([imgr] * 3, 2)
 

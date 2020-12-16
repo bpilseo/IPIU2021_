@@ -1,10 +1,10 @@
-BATCH_SIZE = 128
+BATCH_SIZE = [4, 32] # TRAIN, TEST
 SAVE_FREQ = 1
 TEST_FREQ = 1
 TOTAL_EPOCH = 70
 
 RESUME = ''
-SAVE_DIR = './model'
+SAVE_DIR = './saved_models'
 MODEL_PRE = 'CASIA_B512_'
 
 
