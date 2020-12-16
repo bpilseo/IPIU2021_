@@ -13,7 +13,7 @@ from config import LFW_DATA_DIR, CFP_DATA_DIR
 from models.model import Model
 from dataloader.LFW_loader import LFW
 from dataloader.CFP_loader import CFP
-from utils import evaluation_10_fold
+from utils import evaluation_10_fold, parseList
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
