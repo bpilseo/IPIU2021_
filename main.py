@@ -156,6 +156,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train lighweight face verification model')
     parser.add_argument('--model_name', type=str, default='mobileface_csp', help='model name (mobileface_csp, mobileface)')
+    parser.add_argument('--batch_size', type=int, default='32', help='model name (mobileface_csp, mobileface)')
 
     args = parser.parse_args()
 
