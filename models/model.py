@@ -18,9 +18,9 @@ class Model(nn.Module):
         self.name = name
         print('model name : ', self.name)
         
-        self.model = self._load_timm_model()
+        self.model = self._load_model()
     
-    def _load_timm_model(self):
+    def _load_model(self):
         if self.name == 'mobileface_csp':
             model = Mobileface_csp()
             return model
