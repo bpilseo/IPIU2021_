@@ -1,0 +1,15 @@
+
+*.ipynb
+
+__pycache__/
+
+*.txt
+FaceModels/
+Make.py
+*.mlmodel
+
+*.pt
+
+*.log
+
+*.onnx
